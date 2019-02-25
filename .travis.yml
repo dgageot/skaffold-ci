@@ -1,17 +1,12 @@
 language: go
+
 os:
-  - linux
   - osx
+
 go:
-  - "1.10.x"
   - "1.11.x"
+
 go_import_path: github.com/GoogleContainerTools/skaffold
 
-before_script:
-  - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 script:
   - make out/skaffold test
-  - make coverage
-
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
