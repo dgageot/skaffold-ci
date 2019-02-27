@@ -23,8 +23,8 @@ steps:
 
 #     make out/skaffold test
 
-# - name: gcr.io/cloud-builders/gcloud
-#   args: ['container', 'clusters', 'get-credentials', 'skaffold-ci', '--zone', 'us-central1-f', '--project', 'dga-demo']
+- name: gcr.io/cloud-builders/gcloud
+  args: ['container', 'clusters', 'get-credentials', 'skaffold-ci', '--zone', 'us-central1-f', '--project', 'dga-demo']
 
 - name: gcr.io/cloud-builders/gcloud
   entrypoint: /bin/bash
