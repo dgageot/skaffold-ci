@@ -48,4 +48,4 @@ steps:
 
 #     make integration
 - name: gcr.io/cloud-builders/gcloud
-  args: ['container', 'clusters', 'get-credentials', 'skaffold-ci', '--zone', 'us-central1-f', '--project dga-demo']
+  args: ['container', 'clusters', 'get-credentials', 'skaffold-ci', '--zone', 'us-central1-f', '--project', 'dga-demo']
