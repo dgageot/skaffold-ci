@@ -24,28 +24,29 @@ steps:
 #     make out/skaffold test
 
 # - name: gcr.io/cloud-builders/gcloud
-#   entrypoint: /bin/bash
-#   env:
-#   - REMOTE_INTEGRATION=true
-#   - GCP_PROJECT=$PROJECT_ID
-#   - GKE_CLUSTER_NAME=skaffold-ci
-#   - GKE_ZONE=us-central1-f
-#   args:
-#   - -c
-#   - |
-#     curl -sSlO https://dl.google.com/go/go1.12.linux-amd64.tar.gz
-#     tar -C /usr/local -xzf go1.12.linux-amd64.tar.gz
-#     export PATH=$$PATH:/usr/local/go/bin
-#     export GOPATH=/go
+#   args: ['container', 'clusters', 'get-credentials', 'skaffold-ci', '--zone', 'us-central1-f', '--project', 'dga-demo']
 
-#     apt-get update
-#     apt-get install -y build-essential
-
-#     PARENT_DIR="$$GOPATH/src/github.com/GoogleContainerTools"
-#     mkdir -p $$PARENT_DIR
-#     ln -s /workspace/skaffold-ci $$PARENT_DIR/skaffold
-#     cd $$PARENT_DIR/skaffold
-
-#     make integration
 - name: gcr.io/cloud-builders/gcloud
-  args: ['container', 'clusters', 'get-credentials', 'skaffold-ci', '--zone', 'us-central1-f', '--project', 'dga-demo']
+  entrypoint: /bin/bash
+  env:
+  - REMOTE_INTEGRATION=true
+  - GCP_PROJECT=dga-demo
+  - GKE_CLUSTER_NAME=skaffold-ci
+  - GKE_ZONE=us-central1-f
+  args:
+  - -c
+  - |
+    curl -sSlO https://dl.google.com/go/go1.12.linux-amd64.tar.gz
+    tar -C /usr/local -xzf go1.12.linux-amd64.tar.gz
+    export PATH=$$PATH:/usr/local/go/bin
+    export GOPATH=/go
+
+    apt-get update
+    apt-get install -y build-essential
+
+    PARENT_DIR="$$GOPATH/src/github.com/GoogleContainerTools"
+    mkdir -p $$PARENT_DIR
+    ln -s /workspace/skaffold-ci $$PARENT_DIR/skaffold
+    cd $$PARENT_DIR/skaffold
+
+    make integration
