@@ -39,7 +39,7 @@ steps:
     export GOPATH=/go
 
     apt-get update
-    apt-get install -y make
+    apt-get install -y build-essential
 
     PARENT_DIR="$$GOPATH/src/github.com/GoogleContainerTools"
     mkdir -p $$PARENT_DIR
