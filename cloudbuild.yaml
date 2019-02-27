@@ -21,4 +21,11 @@ steps:
     ln -s /workspace/skaffold-ci $$PARENT_DIR/skaffold
     cd $$PARENT_DIR/skaffold
 
+    echo "REPO_NAME $$REPO_NAME"
+    echo "BRANCH_NAME $$BRANCH_NAME"
+    echo "TAG_NAME $$TAG_NAME"
+    echo "REVISION_ID $$REVISION_ID"
+    echo "COMMIT_SHA $$COMMIT_SHA"
+    echo "SHORT_SHA $$SHORT_SHA"
+
     make out/skaffold test
