@@ -23,13 +23,16 @@ steps:
 
     make out/skaffold test
 
+- name: gcr.io/cloud-builders/gcloud
+  args: ['container', 'clusters', 'get-credentials', 'skaffold-ci', '--zone', 'us-central1-f', '--project', '$PROJECT_ID']
+
 - name: golang:1.11.5-stretch
   entrypoint: /bin/bash
-  env:
-  - REMOTE_INTEGRATION=true
-  - GCP_PROJECT=$PROJECT_ID
-  - GKE_CLUSTER_NAME=skaffold-ci
-  - GKE_ZONE=us-central1-f
+#   env:
+#   - REMOTE_INTEGRATION=false
+#   - GCP_PROJECT=$PROJECT_ID
+#   - GKE_CLUSTER_NAME=skaffold-ci
+#   - GKE_ZONE=us-central1-f
   args:
   - -c
   - |
