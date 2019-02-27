@@ -8,34 +8,35 @@ steps:
   dir: skaffold-ci
   args: ['reset', '--hard', '$COMMIT_SHA']
 
-- name: gcr.io/cloud-builders/docker
-  args: ['pull', 'golang:1.11.5-stretch']
+# - name: gcr.io/cloud-builders/docker
+#   args: ['pull', 'golang:1.11.5-stretch']
 
-- name: golang:1.11.5-stretch
-  entrypoint: /bin/bash
-  args:
-  - -c
-  - |
-    PARENT_DIR="$$GOPATH/src/github.com/GoogleContainerTools"
-    mkdir -p $$PARENT_DIR
-    ln -s /workspace/skaffold-ci $$PARENT_DIR/skaffold
-    cd $$PARENT_DIR/skaffold
+# - name: golang:1.11.5-stretch
+#   entrypoint: /bin/bash
+#   args:
+#   - -c
+#   - |
+#     PARENT_DIR="$$GOPATH/src/github.com/GoogleContainerTools"
+#     mkdir -p $$PARENT_DIR
+#     ln -s /workspace/skaffold-ci $$PARENT_DIR/skaffold
+#     cd $$PARENT_DIR/skaffold
 
-    make out/skaffold test
+#     make out/skaffold test
 
 - name: gcr.io/cloud-builders/gcloud
-  args: ['container', 'clusters', 'get-credentials', 'skaffold-ci', '--zone', 'us-central1-f', '--project', '$PROJECT_ID']
-
-- name: golang:1.11.5-stretch
   entrypoint: /bin/bash
-#   env:
-#   - REMOTE_INTEGRATION=false
-#   - GCP_PROJECT=$PROJECT_ID
-#   - GKE_CLUSTER_NAME=skaffold-ci
-#   - GKE_ZONE=us-central1-f
+  env:
+  - REMOTE_INTEGRATION=true
+  - GCP_PROJECT=$PROJECT_ID
+  - GKE_CLUSTER_NAME=skaffold-ci
+  - GKE_ZONE=us-central1-f
   args:
   - -c
   - |
+    curl -sSlO https://dl.google.com/go/go1.12.linux-amd64.tar.gz
+    tar -C /usr/local -xzf go1.12.linux-amd64.tar.gz
+    export PATH=$PATH:/usr/local/go/bin
+
     PARENT_DIR="$$GOPATH/src/github.com/GoogleContainerTools"
     mkdir -p $$PARENT_DIR
     ln -s /workspace/skaffold-ci $$PARENT_DIR/skaffold
