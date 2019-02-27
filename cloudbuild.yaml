@@ -8,24 +8,46 @@ steps:
   dir: skaffold-ci
   args: ['reset', '--hard', '$COMMIT_SHA']
 
-- name: gcr.io/cloud-builders/docker
-  args: ['pull', 'golang:1.11.5-stretch']
+# - name: gcr.io/cloud-builders/docker
+#   args: ['pull', 'golang:1.11.5-stretch']
 
-- name: golang:1.11.5-stretch
+# - name: golang:1.11.5-stretch
+#   entrypoint: /bin/bash
+#   args:
+#   - -c
+#   - |
+#     PARENT_DIR="$$GOPATH/src/github.com/GoogleContainerTools"
+#     mkdir -p $$PARENT_DIR
+#     ln -s /workspace/skaffold-ci $$PARENT_DIR/skaffold
+#     cd $$PARENT_DIR/skaffold
+
+#     make out/skaffold test
+
+- name: gcr.io/cloud-builders/gcloud
+  args: ['container', 'clusters', 'get-credentials', 'skaffold-ci', '--zone', 'us-central1-f', '--project', 'dga-demo']
+
+- name: gcr.io/cloud-builders/gcloud
   entrypoint: /bin/bash
+  env:
+  - REMOTE_INTEGRATION=true
+  - GCP_PROJECT=dga-demo
+  - GKE_CLUSTER_NAME=skaffold-ci
+  - GKE_ZONE=us-central1-f
   args:
   - -c
   - |
+    curl -sSlO https://dl.google.com/go/go1.12.linux-amd64.tar.gz
+    tar -C /usr/local -xzf go1.12.linux-amd64.tar.gz
+    export GOPATH=/go
+    export GOBIN=/go/bin
+    export PATH=$$PATH:$$GOBIN:/usr/local/go/bin
+
+    apt-get update
+    apt-get install -y build-essential
+
     PARENT_DIR="$$GOPATH/src/github.com/GoogleContainerTools"
     mkdir -p $$PARENT_DIR
     ln -s /workspace/skaffold-ci $$PARENT_DIR/skaffold
     cd $$PARENT_DIR/skaffold
 
-    echo "REPO_NAME $$REPO_NAME"
-    echo "BRANCH_NAME $$BRANCH_NAME"
-    echo "TAG_NAME $$TAG_NAME"
-    echo "REVISION_ID $$REVISION_ID"
-    echo "COMMIT_SHA $$COMMIT_SHA"
-    echo "SHORT_SHA $$SHORT_SHA"
-
-    make out/skaffold test
+    make integration
