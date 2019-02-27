@@ -26,6 +26,5 @@ steps:
     echo "TAG_NAME $$TAG_NAME"
     echo "REVISION_ID $$REVISION_ID"
     echo "COMMIT_SHA $$COMMIT_SHA"
-    echo "SHORT_SHA $$SHORT_SHA"
 
     make out/skaffold test
