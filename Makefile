@@ -86,7 +86,11 @@ install: $(GO_FILES) $(BUILD_DIR)
 
 .PHONY: integration
 integration: install
-	go test -v -tags integration $(REPOPATH)/integration -timeout 10m --remote=$(REMOTE_INTEGRATION)
+	go test -v -tags integration $(REPOPATH)/integration -timeout 10m \
+		--remote=$(REMOTE_INTEGRATION) \
+		--gcp-project=$(GCP_PROJECT) \
+		--gke-cluster-name=$(GKE_CLUSTER_NAME) \
+		--gke-zone=$(GKE_ZONE)
 
 .PHONY: coverage
 coverage: $(BUILD_DIR)
