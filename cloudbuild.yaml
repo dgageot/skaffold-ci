@@ -38,8 +38,9 @@ steps:
   - |
     curl -sSlO https://dl.google.com/go/go1.12.linux-amd64.tar.gz
     tar -C /usr/local -xzf go1.12.linux-amd64.tar.gz
-    export PATH=$$PATH:/usr/local/go/bin
     export GOPATH=/go
+    export GOBIN=/go/bin
+    export PATH=$$PATH:$$GOBIN:/usr/local/go/bin
 
     apt-get update
     apt-get install -y build-essential
