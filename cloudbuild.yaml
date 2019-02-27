@@ -37,6 +37,9 @@ steps:
     tar -C /usr/local -xzf go1.12.linux-amd64.tar.gz
     export PATH=$$PATH:/usr/local/go/bin
 
+    apt-get update
+    apt-get install -y make
+
     PARENT_DIR="$$GOPATH/src/github.com/GoogleContainerTools"
     mkdir -p $$PARENT_DIR
     ln -s /workspace/skaffold-ci $$PARENT_DIR/skaffold
